@@ -12,8 +12,8 @@ pipeline {
         stage('checkout') {
             steps {
                 script {
-                    dir("jenkins-project") {
-                        git branch: 'main', url: 'https://github.com/chethan-nexon/jenkins-project.git'
+                    dir("terraform-project") {
+                        git branch: 'main', url: 'https://github.com/chethan-nexon/terraform-project.git'
                     }
                 }
             }
@@ -21,16 +21,16 @@ pipeline {
 
         stage('Plan') {
             steps {
-                sh 'pwd;cd jenkins-project/ ; terraform init'
-                sh "pwd;cd jenkins-project/ ; terraform plan -out tfplan"
-                sh 'pwd;cd jenkins-project/ ; terraform show -no-color tfplan > tfplan.txt'
+                sh 'pwd;cd terraform-project/ ; terraform init'
+                sh "pwd;cd terraform-project/ ; terraform plan -out tfplan"
+                sh 'pwd;cd terraform-project/ ; terraform show -no-color tfplan > tfplan.txt'
             }
         }
 
         stage('Approval') {
             steps {
                 script {
-                    def plan = readFile 'jenkins-project/tfplan.txt'
+                    def plan = readFile 'terraform-project/tfplan.txt'
                     input message: "Do you want to proceed with the Terraform action?",
                     parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
                 }
@@ -46,9 +46,9 @@ pipeline {
             steps {
                 script {
                     if (params.terraformAction == 'apply') {
-                        sh "pwd;cd jenkins-project/ ; terraform apply -input=false tfplan"
+                        sh "pwd;cd terraform-project/ ; terraform apply -input=false tfplan"
                     } else if (params.terraformAction == 'destroy') {
-                        sh "pwd;cd jenkins-project/ ; terraform destroy -auto-approve"
+                        sh "pwd;cd terraform-project/ ; terraform destroy -auto-approve"
                     }
                 }
             }
