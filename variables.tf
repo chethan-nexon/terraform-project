@@ -37,7 +37,7 @@ variable "key_name" {
 variable "security_group_ids" {
   description = "List of security group IDs"
   type        = list(string)
-  default     = ["sg-038f3160cdfd35e2b ] # Replace with actual SG ID
+  default     = ["sg-038f3160cdfd35e2b ] 
 }
 
 
