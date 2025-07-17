@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     dir("terraform-project") {
-                        git branch: 'main', url: 'https://github.com/chethan-nexon/terraform-project.git'
+                        git branch: 'master', url: 'https://github.com/chethan-nexon/terraform-project.git'
                     }
                 }
             }
